@@ -1,0 +1,22 @@
+{% extends 'blog/base.html' %}
+
+{% load bootstrap3 %}
+
+{% load highlight %}
+
+{% block content %}
+
+    {% if post_results %}
+        <h1 class="text-center">Search Results</h1>    
+        {% for qs in post_results %}
+        <div class="blog-post">
+            <h2 class="blog-post-title text-center"><a class="color-black" href="{{ qs.object.get_absolute_url }}">{{ qs.object.title }}</a></h2>
+            <p class="text-justify">{% highlight qs.object.body with query css_class "highlight_text" %}</p>
+            <hr>
+        </div>
+        {% endfor %}
+    {% else %}
+        <h1 class="text-center">No results found</h1>
+    {% endif %}
+
+{% endblock %}

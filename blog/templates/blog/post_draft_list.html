@@ -1,0 +1,14 @@
+{% extends 'blog/base.html' %}
+
+{% block active_draft %}active{% endblock %}
+
+{% block content %}
+    {% for post in posts %}
+        <div class="blog-post">
+            <h2 class="blog-post-title text-center"><a class="color-black" href="{% url 'post_detail' slug=post.slug %}">{{ post.title }}</a></h2>
+            <p class="blog-post-meta text-center">{{ post.created_date|date:'d-m-Y' }} by {{ post.author }}</a></p>
+            <p>{{ post.body|linebreaks|truncatechars:500 }}</p>
+            <hr>
+        </div>
+    {% endfor %}
+{% endblock %}

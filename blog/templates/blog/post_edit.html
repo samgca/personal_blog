@@ -1,0 +1,19 @@
+{% extends 'blog/base.html' %}
+
+{% load bootstrap3 %}
+
+{% block active_new_post %}
+    {% if new_post %}active{% endif %}
+{% endblock %}
+
+{% block content %}
+    <h1 class="text-center">New post</h1>
+    {% bootstrap_messages %}
+    <form role="form" method="POST">
+        {% csrf_token %}
+        {% bootstrap_form form_post %}
+        <div class="text-center">
+            <button type="submit" class="btn btn-default">Save</button>
+        </div>
+    </form>
+{% endblock %}

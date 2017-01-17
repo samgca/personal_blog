@@ -1,0 +1,22 @@
+{% extends 'blog/base.html' %}
+
+{% load bootstrap3 %}
+
+{% block active_new_tag %}active{% endblock %}
+
+{% block content %}
+    <h1 class="text-center">New tag</h1>
+    {% bootstrap_messages %}
+    <form  role="form" method="POST">
+        {% csrf_token %}
+        {% bootstrap_form form_tags %}
+        <div class="text-center">
+            <button type="submit" class="btn btn-default">Save</button>
+        </div>
+    </form>
+
+    {% for tag in tags_list %}
+        <a class="btn btn-default" href="{% url 'post_tag' slug=tag %}">{{ tag }}</a>
+    {% endfor %}
+
+{% endblock %}
