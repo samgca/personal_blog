@@ -1,6 +1,8 @@
 
-Create a personal blog with tags and advanced search using django haystack.
+# Create a personal blog. #
 
-if you need to reindex run
+Packages used:
 
-python manage.py rebuild_index
+* Django
+* Whoosh
+* Haystack

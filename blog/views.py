@@ -24,13 +24,12 @@ def create_pagination(query, post_per_page, page):
 
 
 def post_list(request):
-    posts_list = Post.objects.filter(
-        published_date__lte=timezone.now()).order_by('-published_date')
+    posts_list = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
     page = request.GET.get('page')
     pagination = create_pagination(posts_list, 2, page)
     form_search = SearchForm()
-    return render(request, 'blog/post_list.html', {'posts': pagination[0], 'n': pagination[1],
-                    'paginator_count': pagination[2], 'form_search': form_search})
+    params = {'posts': pagination[0], 'n': pagination[1], 'paginator_count': pagination[2], 'form_search': form_search}
+    return render(request, 'blog/post_list.html', params)
 
 
 def post_with_tag(request, slug):
@@ -38,8 +37,8 @@ def post_with_tag(request, slug):
     posts_list = tags.get_post_from_tag()
     page = request.GET.get('page')
     pagination = create_pagination(posts_list, 2, page)
-    return render(request, 'blog/post_list.html', {'posts': pagination[0], 'n': pagination[1],
-        'paginator_count': pagination[2]})
+    params = {'posts': pagination[0], 'n': pagination[1], 'paginator_count': pagination[2]}
+    return render(request, 'blog/post_list.html', params)
 
 
 def post_detail(request, slug):
@@ -48,8 +47,7 @@ def post_detail(request, slug):
 
 
 def post_draft_list(request):
-    posts = Post.objects.filter(
-        published_date__isnull=True).order_by('created_date')
+    posts = Post.objects.filter(published_date__isnull=True).order_by('created_date')
     return render(request, 'blog/post_draft_list.html', {'posts': posts})
 
 
@@ -65,8 +63,7 @@ def post_new(request):
             return redirect('post_detail', slug=post.slug)
     else:
         form = PostForm()
-    return render(request, 'blog/post_edit.html', {
-        'form_post': form, 'new_post': True})
+    return render(request, 'blog/post_edit.html', {'form_post': form, 'new_post': True})
 
 
 @login_required()
@@ -118,12 +115,9 @@ def post_search(request):
         form = SearchForm(request.POST)
         if form.is_valid():
             search_text = form.cleaned_data['comment']
-            print(form)
-            print(search_text)
             post_results = SearchQuerySet().models(Post).filter(content=search_text).highlight()
-            print(post_results)
-            return render(request, 'blog/post_search.html', 
-                        {'form_search': form, 'post_results': post_results, 'query': search_text})
+            params = {'form_search': form, 'post_results': post_results, 'query': search_text}
+            return render(request, 'blog/post_search.html', params)
     else:
         form = SearchForm()
     return render(request, 'blog/post_search.html', {'form_search': form})
